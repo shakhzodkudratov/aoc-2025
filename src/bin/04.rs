@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs)]
+
 use adv_code_2025::*;
 use anyhow::*;
 use code_timing_macros::time_snippet;
@@ -6,7 +8,6 @@ use itertools::Itertools;
 use std::fmt::Debug;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::ops::DerefMut;
 
 const DAY: &str = "04";
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
@@ -93,10 +94,12 @@ fn solver<R: BufRead>(reader: R, once: bool) -> Result<usize> {
         .collect_vec();
 
     let mut result = 0;
-    loop {
-        let mut marked_p = vec![];
-        let mut removed_p = vec![];
+    let mut marked_p = Vec::with_capacity(10000);
+    let mut removed_p = Vec::with_capacity(10000);
 
+    loop {
+        marked_p.clear();
+        removed_p.clear();
         answer.iter().enumerate().for_each(|(y, row)| {
             row.iter().enumerate().for_each(|(x, place)| match place {
                 Place::Empty | Place::Removed => (),
@@ -145,7 +148,6 @@ fn main() -> Result<()> {
         solver(reader, true)
     }
 
-    // TODO: Set the expected answer for the test input
     assert_eq!(13, part1(BufReader::new(TEST.as_bytes()))?);
 
     let input_file = BufReader::new(File::open(INPUT_FILE)?);
@@ -166,6 +168,10 @@ fn main() -> Result<()> {
     let result = time_snippet!(part2(input_file)?);
     println!("Result = {}", result);
     //endregion
+
+    let input_file = BufReader::new(File::open(concatcp!("input/", DAY, "-bobosher.txt"))?);
+    let result = time_snippet!(part2(input_file)?);
+    println!("Result = {}", result);
 
     Ok(())
 }

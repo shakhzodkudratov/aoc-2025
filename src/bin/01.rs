@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs)]
+
 use adv_code_2025::*;
 use anyhow::*;
 use code_timing_macros::time_snippet;
@@ -102,7 +104,6 @@ fn main() -> Result<()> {
     println!("=== Part 1 ===");
 
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
-        // TODO: Solve Part 1 of the puzzle
         let actions = reader.lines();
 
         // dial position, 0 count
@@ -120,7 +121,6 @@ fn main() -> Result<()> {
         Ok(result)
     }
 
-    // TODO: Set the expected answer for the test input
     assert_eq!(3, part1(BufReader::new(TEST.as_bytes()))?);
 
     let input_file = BufReader::new(File::open(INPUT_FILE)?);
@@ -137,7 +137,7 @@ fn main() -> Result<()> {
         // dial position, 0 count
         let (_, result) = parse_actions(actions).into_iter().enumerate().fold(
             (50, 0usize),
-            |(dial_position, result), (i, action)| {
+            |(dial_position, result), (_, action)| {
                 let RotationResult {
                     new_position,
                     zero_crosses,

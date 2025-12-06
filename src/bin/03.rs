@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs)]
+
 use adv_code_2025::*;
 use anyhow::*;
 use code_timing_macros::time_snippet;
